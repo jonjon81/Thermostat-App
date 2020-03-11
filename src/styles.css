@@ -278,16 +278,18 @@ i.fas.fa-fan {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: red;
+  background: #01279b;
   cursor: pointer;
+  border: 2px solid #fff;
 }
 
 .slider::-moz-range-thumb {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #fff;
+  background: #01279b;
   cursor: pointer;
+  border: 2px solid #fff;
 }
 
 @media only screen and (max-width: 800px) {
