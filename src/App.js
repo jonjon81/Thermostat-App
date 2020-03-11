@@ -291,7 +291,7 @@ class App extends Component {
   handleThermostatModeCool() {
     // Patch request
     if (this.state.averageOutdoorTempRounded < 0) {
-      alert("Temperature is too low for that");
+      alert("Outside temperature is too low for that");
     } else {
       fetch(
         "https://api-staging.paritygo.com/sensors/api/thermostat/" +
