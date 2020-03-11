@@ -278,7 +278,7 @@ button.last-button {
   border: 3px solid #fff;
 }
 
-i.fas.fa-fan {
+.fa-fan {
   position: absolute;
   font-size: 19px;
   bottom: -30px;
@@ -352,7 +352,7 @@ i.fas.fa-fan {
 
 @media only screen and (max-width: 800px) {
   .thermostatContainer {
-    width: 100%;
+    width: auto;
   }
 }
 
@@ -364,8 +364,21 @@ i.fas.fa-fan {
     flex-direction: column;
   }
 
+  .thermostatContainer {
+    padding: 0;
+    padding-bottom: 80px;
+  }
   li.set-temp-box button {
     border-radius: 25px;
+  }
+
+  li.outside-temp {
+    border: none;
+  }
+
+  li.inside-temp {
+    border: none;
+    border-top: 1px solid #fff;
   }
 
   .controls-container {
@@ -384,21 +397,12 @@ i.fas.fa-fan {
     align-items: center;
   }
 
-  li.inside-temp {
-    border: 2px solid;
-    border-top: 1px solid;
-  }
-
   .thermostat-container {
     margin-bottom: 25px;
   }
 
   span.set-to-temp {
     margin-bottom: 10px;
-  }
-
-  .desiredTemperature h2 {
-    font-size: 36px;
   }
 
   .auto-container {
@@ -416,15 +420,25 @@ i.fas.fa-fan {
   li.outside-temp,
   li.inside-temp,
   li.set-temp-box {
-    width: 100%;
+    width: auto;
+  }
+
+  li.set-temp-box {
+    align-items: center;
+    margin-top: 0;
+  }
+
+  .slider-container {
+    display: flex;
+    padding: 20px 10px;
   }
 
   li.inside-temp {
     padding: 40px 10px;
   }
 
-  li.set-temp-box {
-    font-size: 36px;
+  li.set-temp-box button {
+    width: 200px;
   }
 
   .thermostat-container button span,

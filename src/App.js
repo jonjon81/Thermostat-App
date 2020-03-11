@@ -412,23 +412,25 @@ class App extends Component {
           <li className="inside-temp">
             <h2 className="section-header">Indoor</h2>
             <span>{this.state.averageIndoorTempRounded}&#176;</span>
-            <input
-              className="slider"
-              id="typeinp"
-              type="range"
-              min="10"
-              max="40"
-              value={this.state.desiredTemperature}
-              onChange={this.handleTemperatureChange}
-              step="1"
-            />
+            <div className="slider-container">
+              <input
+                className="slider"
+                id="typeinp"
+                type="range"
+                min="10"
+                max="40"
+                value={this.state.desiredTemperature}
+                onChange={this.handleTemperatureChange}
+                step="1"
+              />
+            </div>
           </li>
           <li className="set-temp-box">
             <button
               value={this.state.desiredTemperature}
               onClick={() => this.handleTemperatureIncrement("increase")}
             >
-              <span className="fas fa-angle-up" />
+              <span className="fa fa-angle-up" />
             </button>
             <span className="set-to"> Set to </span>
             <span className="set-to-temp">
@@ -438,7 +440,7 @@ class App extends Component {
               value={this.state.desiredTemperature}
               onClick={() => this.handleTemperatureIncrement("down")}
             >
-              <span className="fas fa-angle-down" />
+              <span className="fa fa-angle-down" />
             </button>
           </li>
         </ul>
@@ -465,7 +467,7 @@ class App extends Component {
 
           <div className="auto-container">
             <div className="active-auto-mode" />
-            <i className="fas fa-fan" />
+            <i className="fa fa-fan" />
             <button
               className="first-button"
               onClick={() => this.handleThermostatModeFanOn()}
