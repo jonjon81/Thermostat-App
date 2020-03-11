@@ -168,6 +168,40 @@ span.set-to {
   margin-top: 10px;
 }
 
+.thermostat-container {
+  background: #fff;
+  margin-top: 30px;
+  height: 60px;
+  display: flex;
+  width: 240px;
+  position: relative;
+}
+
+.active-thermostat-mode {
+  position: absolute;
+  left: 80px;
+  background: #000;
+  height: 60px;
+  width: 80px;
+}
+
+.thermostat-container button {
+  width: 80px;
+  position: relative;
+}
+
+.thermostat-container button span {
+  position: absolute;
+  bottom: -15px;
+  font-size: 18px;
+  color: #fff;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+
+}
+
 @media only screen and (max-width: 800px) {
   .thermostatContainer {
     width: 100%;

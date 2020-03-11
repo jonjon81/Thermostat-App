@@ -25,6 +25,7 @@ class App extends Component {
     this.handleTemperatureIncrement = this.handleTemperatureIncrement.bind(
       this
     );
+    this.handleThermostaChange = this.handleThermostaChange.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +67,7 @@ class App extends Component {
         );
     }
 
+    // Get the current date + 2hrs previous in order to get the current range of data points when fetching the data.
     let currentDate = new Date();
     let currentYear = currentDate.getFullYear();
     let currentMonth = currentDate.getMonth() + 1;
@@ -74,14 +76,12 @@ class App extends Component {
     let currentMinutes = currentDate.getMinutes();
 
     let previousDate = new Date();
-    console.log(previousDate);
-    // let twoHoursAgo = previousDate.setHours(previousDate.getHours() - 24);
-    // let currentYearB = twoHoursAgo.getFullYear();
-    // console.log(currentYearB);
-    // let currentMonthB = twoHoursAgo.getMonth() + 1;
-    // let currentDayB = twoHoursAgo.getDate();
-    // let currentHoursB = twoHoursAgo.getHours();
-    // let currentMinutesB = twoHoursAgo.getMinutes();
+    previousDate.setHours(previousDate.getHours() - 2);
+    let currentYearB = previousDate.getFullYear();
+    let currentMonthB = previousDate.getMonth() + 1;
+    let currentDayB = previousDate.getDate();
+    let currentHoursB = previousDate.getHours();
+    let currentMinutesB = previousDate.getMinutes();
 
     const endingTime =
       currentYear +
@@ -94,29 +94,17 @@ class App extends Component {
       ":" +
       currentMinutes;
     const beginTime =
-      currentYear +
+      currentYearB +
       "-" +
-      currentMonth +
+      currentMonthB +
       "-" +
-      currentDay +
+      currentDayB +
       "T" +
-      (currentHours - 2) +
+      currentHoursB +
       ":" +
-      currentMinutes;
-    console.log("Ending: " + endingTime);
-    console.log("Begin: " + beginTime);
+      currentMinutesB;
 
-    let today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1;
-    let yyyy = today.getFullYear();
-    if (dd < 10) {
-      dd = "0" + dd;
-    }
-    if (mm < 10) {
-      mm = "0" + mm;
-    }
-    today = mm + "-" + dd + "-" + yyyy;
+    let today = currentMonth + "-" + currentDay + "-" + currentYear;
     this.setState({ todayDate: today });
 
     // Time
@@ -129,6 +117,7 @@ class App extends Component {
     let time = hours + ":" + minutes + " " + am_pm;
     this.setState({ currentTime: time });
 
+    // Get Indoor data
     fetch(
       "https://api-staging.paritygo.com/sensors/api/sensors/indoor-1/?begin=" +
         beginTime +
@@ -158,6 +147,7 @@ class App extends Component {
         });
       });
 
+    // Get humidity data
     fetch(
       "https://api-staging.paritygo.com/sensors/api/sensors/humidity/?begin=" +
         beginTime +
@@ -180,6 +170,7 @@ class App extends Component {
         });
       });
 
+    // Get outdoor data
     fetch(
       "https://api-staging.paritygo.com/sensors/api/sensors/outdoor-1/?begin=" +
         beginTime +
@@ -192,16 +183,15 @@ class App extends Component {
           loading: false,
           outdoorData: data
         });
-        // make sure there are 2 other data points in 10 or 15 mins?
-        // first get everything functioning, then you can iterate and make great improvements
+
         const real_data = this.state.outdoorData.data_points;
         const mostRecentData = real_data.length - 1;
         const secondMostRecentData = real_data.length - 2;
         const thirdMostRecentData = real_data.length - 3;
 
-        const last5Mins = parseInt(real_data[mostRecentData].value);
-        const last10Mins = parseInt(real_data[secondMostRecentData].value);
-        const last15Mins = parseInt(real_data[thirdMostRecentData].value);
+        const last5Mins = parseInt(real_data[mostRecentData].value, 10);
+        const last10Mins = parseInt(real_data[secondMostRecentData].value, 10);
+        const last15Mins = parseInt(real_data[thirdMostRecentData].value, 10);
         const averageOutdoorTemp = (last5Mins + last10Mins + last15Mins) / 3;
         const averageOutdoorTempRounded = averageOutdoorTemp.toFixed(0);
         this.setState({
@@ -211,7 +201,7 @@ class App extends Component {
   }
 
   handleThermostatModeHeat() {
-    // Put/Patch requests
+    // Patch request
     fetch(
       "https://api-staging.paritygo.com/sensors/api/thermostat/" +
         this.state.uidHash +
@@ -228,7 +218,7 @@ class App extends Component {
   }
 
   handleThermostatModeAuto() {
-    // Put/Patch requests
+    // Patch request
     fetch(
       "https://api-staging.paritygo.com/sensors/api/thermostat/" +
         this.state.uidHash +
@@ -245,7 +235,7 @@ class App extends Component {
   }
 
   handleThermostatModeOff() {
-    // Put/Patch requests
+    // Patch requests
     fetch(
       "https://api-staging.paritygo.com/sensors/api/thermostat/" +
         this.state.uidHash +
@@ -323,15 +313,15 @@ class App extends Component {
         }
       );
     }
-
-    // if desiredtemp is < current inside temp, then state becomes auto_cool and USER can easily see
-    // once temp = current inside temp, state becomes auto_standby and USER can easily see
   }
 
   handleTemperatureIncrement(direction) {
     console.log("Temperature up 1");
+    console.log(this.state.averageIndoorTempRounded);
     let currentDesiredTemp = parseInt(this.state.desiredTemperature, 10);
-
+    if (isNaN(currentDesiredTemp)) {
+      currentDesiredTemp = parseInt(this.state.averageIndoorTempRounded, 10);
+    }
     if (direction === "increase") {
       currentDesiredTemp = currentDesiredTemp + 1;
     } else {
@@ -340,6 +330,10 @@ class App extends Component {
 
     localStorage.setItem("desiredTemperature", currentDesiredTemp);
     this.setState({ desiredTemperature: currentDesiredTemp });
+  }
+
+  handleThermostaChange(mode) {
+    console.log(mode);
   }
 
   render() {
@@ -406,6 +400,19 @@ class App extends Component {
             </button>
           </li>
         </ul>
+
+        <div className="thermostat-container">
+          <div className="active-thermostat-mode" />
+          <button onClick={() => this.handleThermostaChange("Cool")}>
+            <span>Cool</span>
+          </button>
+          <button onClick={() => this.handleThermostaChange("Off")}>
+            <span>Off</span>
+          </button>
+          <button onClick={() => this.handleThermostaChange("Heat")}>
+            <span>Heat</span>
+          </button>
+        </div>
 
         <div className="control-buttons">
           <div className="temperature-buttons-container">
