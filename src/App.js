@@ -10,7 +10,8 @@ class App extends Component {
       humidityData: {},
       averageIndoorTempRounded: null,
       averageOutdoorTempRounded: null,
-      thermostatMode: null,
+      thermostatMode: localStorage.thermostatMode,
+      fanMode: localStorage.fanMode,
       uidHash: localStorage.uidHash,
       desiredTemperature: localStorage.desiredTemperature,
       todayDate: null,
@@ -20,16 +21,38 @@ class App extends Component {
     this.handleThermostatModeHeat = this.handleThermostatModeHeat.bind(this);
     this.handleThermostatModeCool = this.handleThermostatModeCool.bind(this);
     this.handleThermostatModeOff = this.handleThermostatModeOff.bind(this);
+    this.handleThermostatModeFanOn = this.handleThermostatModeFanOn.bind(this);
     this.handleThermostatModeAuto = this.handleThermostatModeAuto.bind(this);
     this.handleTemperatureChange = this.handleTemperatureChange.bind(this);
     this.handleTemperatureIncrement = this.handleTemperatureIncrement.bind(
       this
     );
-    this.handleThermostaChange = this.handleThermostaChange.bind(this);
+    this.handleThermostatChange = this.handleThermostatChange.bind(this);
   }
 
   componentDidMount() {
     this.setState({ loading: true });
+
+    let elem = document.querySelector(".active-thermostat-mode");
+    if (this.state.thermostatMode === "heat") {
+      console.log("Mode is HEAT");
+      elem.style.left = "160px";
+    } else if (this.state.thermostatMode === "cool") {
+      elem.style.left = "0";
+    } else if (this.state.thermostatMode === "off") {
+      elem.style.left = "80px";
+    } else {
+      //
+    }
+
+    let elemB = document.querySelector(".active-auto-mode");
+    if (this.state.fanMode === "fan-on") {
+      elemB.style.left = "0";
+    } else if (this.state.fanMode === "auto") {
+      elemB.style.left = "80px";
+    } else {
+      elemB.style.left = "0";
+    }
 
     const requestOptions = {
       method: "POST",
@@ -53,7 +76,6 @@ class App extends Component {
           })
         );
     } else {
-      console.log("ALREADY SET!");
       console.log(localStorage.uidHash);
       fetch(
         "https://api-staging.paritygo.com/sensors/api/thermostat/" +
@@ -67,21 +89,21 @@ class App extends Component {
         );
     }
 
-    // Get the current date + 2hrs previous in order to get the current range of data points when fetching the data.
+    // Get the UTC current date + previous time in order to get the current range of data points when fetching the data.
     let currentDate = new Date();
-    let currentYear = currentDate.getFullYear();
-    let currentMonth = currentDate.getMonth() + 1;
-    let currentDay = currentDate.getDate();
-    let currentHours = currentDate.getHours();
-    let currentMinutes = currentDate.getMinutes();
+    let currentYear = currentDate.getUTCFullYear();
+    let currentMonth = currentDate.getUTCMonth() + 1;
+    let currentDay = currentDate.getUTCDate();
+    let currentHours = currentDate.getUTCHours();
+    let currentMinutes = currentDate.getUTCMinutes();
 
     let previousDate = new Date();
-    previousDate.setHours(previousDate.getHours() - 2);
-    let currentYearB = previousDate.getFullYear();
-    let currentMonthB = previousDate.getMonth() + 1;
-    let currentDayB = previousDate.getDate();
-    let currentHoursB = previousDate.getHours();
-    let currentMinutesB = previousDate.getMinutes();
+    previousDate.setHours(previousDate.getUTCHours() - 8);
+    let currentYearB = previousDate.getUTCFullYear();
+    let currentMonthB = previousDate.getUTCMonth() + 1;
+    let currentDayB = previousDate.getUTCDate();
+    let currentHoursB = previousDate.getUTCHours();
+    let currentMinutesB = previousDate.getUTCMinutes();
 
     const endingTime =
       currentYear +
@@ -130,8 +152,7 @@ class App extends Component {
           loading: false,
           indoorData: data
         });
-        // make sure there are 2 other data points in 10 or 15 mins?
-        // first get everything functioning, then you can iterate and make great improvements
+        // Get average of 3 most recent data points
         const real_data = this.state.indoorData.data_points;
         const mostRecentData = real_data.length - 1;
         const secondMostRecentData = real_data.length - 2;
@@ -184,6 +205,7 @@ class App extends Component {
           outdoorData: data
         });
 
+        // Get average of 3 most recent data points
         const real_data = this.state.outdoorData.data_points;
         const mostRecentData = real_data.length - 1;
         const secondMostRecentData = real_data.length - 2;
@@ -193,7 +215,7 @@ class App extends Component {
         const last10Mins = parseInt(real_data[secondMostRecentData].value, 10);
         const last15Mins = parseInt(real_data[thirdMostRecentData].value, 10);
         const averageOutdoorTemp = (last5Mins + last10Mins + last15Mins) / 3;
-        const averageOutdoorTempRounded = averageOutdoorTemp.toFixed(0);
+        const averageOutdoorTempRounded = averageOutdoorTemp.toFixed(1);
         this.setState({
           averageOutdoorTempRounded: averageOutdoorTempRounded
         });
@@ -215,6 +237,9 @@ class App extends Component {
       }
     );
     this.setState({ thermostatMode: "heat" });
+    let elem = document.querySelector(".active-thermostat-mode");
+    elem.style.left = "160px";
+    localStorage.setItem("thermostatMode", "heat");
   }
 
   handleThermostatModeAuto() {
@@ -232,6 +257,15 @@ class App extends Component {
       }
     );
     this.setState({ thermostatMode: "auto_standby" });
+    let elem = document.querySelector(".active-auto-mode");
+    elem.style.left = "80px";
+    localStorage.setItem("fanMode", "auto");
+  }
+
+  handleThermostatModeFanOn() {
+    let elem = document.querySelector(".active-auto-mode");
+    elem.style.left = "0";
+    localStorage.setItem("fanMode", "fan-on");
   }
 
   handleThermostatModeOff() {
@@ -249,6 +283,9 @@ class App extends Component {
       }
     );
     this.setState({ thermostatMode: "off" });
+    let elem = document.querySelector(".active-thermostat-mode");
+    elem.style.left = "80px";
+    localStorage.setItem("thermostatMode", "off");
   }
 
   handleThermostatModeCool() {
@@ -269,6 +306,9 @@ class App extends Component {
         }
       );
       this.setState({ thermostatMode: "cool" });
+      let elem = document.querySelector(".active-thermostat-mode");
+      elem.style.left = "0";
+      localStorage.setItem("thermostatMode", "cool");
     }
   }
 
@@ -332,8 +372,9 @@ class App extends Component {
     this.setState({ desiredTemperature: currentDesiredTemp });
   }
 
-  handleThermostaChange(mode) {
-    console.log(mode);
+  handleThermostatChange(mode) {
+    const handleThermostatMode = "handleThermostatMode" + mode;
+    console.log(handleThermostatMode);
   }
 
   render() {
@@ -401,28 +442,41 @@ class App extends Component {
           </li>
         </ul>
 
-        <div className="thermostat-container">
-          <div className="active-thermostat-mode" />
-          <button onClick={() => this.handleThermostaChange("Cool")}>
-            <span>Cool</span>
-          </button>
-          <button onClick={() => this.handleThermostaChange("Off")}>
-            <span>Off</span>
-          </button>
-          <button onClick={() => this.handleThermostaChange("Heat")}>
-            <span>Heat</span>
-          </button>
-        </div>
-
-        <div className="control-buttons">
-          <div className="temperature-buttons-container">
-            <button onClick={this.handleThermostatModeHeat}>Heating</button>
-            <button onClick={this.handleThermostatModeOff}>Off</button>
-            <button onClick={this.handleThermostatModeCool}>Cooling</button>
+        <div className="controls-container">
+          <div className="thermostat-container">
+            <div className="active-thermostat-mode" />
+            <button
+              className="first-button"
+              onClick={() => this.handleThermostatModeCool()}
+            >
+              <span>Cool</span>
+            </button>
+            <button onClick={() => this.handleThermostatModeOff()}>
+              <span>Off</span>
+            </button>
+            <button
+              className="last-button"
+              onClick={() => this.handleThermostatModeHeat()}
+            >
+              <span>Heat</span>
+            </button>
           </div>
-          <div className="fan-buttons-container">
-            <button onClick={this.handleThermostatModeAuto}>On</button>
-            <button onClick={this.handleThermostatModeAuto}>Auto</button>
+
+          <div className="auto-container">
+            <div className="active-auto-mode" />
+            <i className="fas fa-fan" />
+            <button
+              className="first-button"
+              onClick={() => this.handleThermostatModeFanOn()}
+            >
+              <span>On</span>
+            </button>
+            <button
+              className="last-button"
+              onClick={() => this.handleThermostatModeAuto()}
+            >
+              <span>Auto</span>
+            </button>
           </div>
         </div>
       </div>
