@@ -413,6 +413,7 @@ class App extends Component {
             <h2 className="section-header">Indoor</h2>
             <span>{this.state.averageIndoorTempRounded}&#176;</span>
             <input
+              className="slider"
               id="typeinp"
               type="range"
               min="10"
