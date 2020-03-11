@@ -1,0 +1,175 @@
+.desiredTemperature button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font-size: 48px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #fff;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 5px 10px #000;
+}
+
+.desiredTemperature button:active {
+  box-shadow: 0 5px #000;
+  transform: translateY(4px);
+  transition: 0.1s;
+}
+
+.desiredTemperature button:focus {
+  outline: none;
+}
+
+.thermostatContainer {
+  width: 740px;
+  margin: auto;
+  max-width: 100%;
+  text-align: center;
+  background: #01279b;
+  color: #fff;
+  padding: 30px;
+}
+
+span.fas.fa-angle-up {
+  color: #01279b;
+}
+
+span.fas.fa-angle-down {
+  color: #01279b;
+}
+
+li.set-temp-box {
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 20%;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+li.set-temp-box span:last-child {
+  font-size: 48px;
+}
+
+.thermostatContainer h1 {
+  border-bottom: 1px solid;
+  padding: 20px;
+  margin: 0;
+}
+
+.temperatures-container {
+  display: flex;
+  justify-content: center;
+}
+
+.temperatures-container ul {
+  padding: 1em;
+  list-style: none;
+  font-size: 24px;
+  width: 33.33%;
+  border: 1px solid;
+  margin: 0;
+}
+
+.desiredTemperature {
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  display: flex;
+}
+.desiredTemperature h2 {
+  font-size: 24px;
+  margin: 20px;
+}
+
+li.outside-temp {
+  font-size: 24px;
+  width: 40%;
+  border: 2px solid;
+  padding: 20px 10px;
+  text-align: left;
+}
+
+li.arrow-container {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+li.inside-temp {
+  font-size: 100px;
+  width: 40%;
+  border: 2px solid;
+  border-left: 0;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2.section-header {
+  text-transform: uppercase;
+  font-weight: 100;
+}
+
+li.set-temp-box {
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+li.set-temp-box span:first-child {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+li.outside-temp .section-header {
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+h2.time-section,
+h2.humidity-holder,
+h2.thermostat-mode {
+  margin-top: 0;
+}
+
+h2.dateTime {
+  margin-bottom: 0;
+}
+
+span.set-to-temp {
+  font-size: 36px;
+}
+
+.temperature-buttons-container button,
+.fan-buttons-container button {
+  padding: 25px;
+  border: 1px solid;
+}
+
+.temperature-buttons-container {
+  width: 50%;
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+span.set-to {
+  margin-top: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+  .thermostatContainer {
+    width: 100%;
+  }
+}
