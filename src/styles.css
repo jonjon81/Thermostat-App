@@ -10,12 +10,18 @@
   background: #fff;
   padding: 20px;
   margin: 10px;
+  -webkit-box-shadow: 5px 10px #000;
   box-shadow: 5px 10px #000;
 }
 
 .desiredTemperature button:active {
+  -webkit-box-shadow: 0 5px #000;
   box-shadow: 0 5px #000;
+  -webkit-transform: translateY(4px);
+  -ms-transform: translateY(4px);
   transform: translateY(4px);
+  -webkit-transition: 0.1s;
+  -o-transition: 0.1s;
   transition: 0.1s;
 }
 
@@ -45,8 +51,15 @@ span.fas.fa-angle-down {
 
 li.set-temp-box {
   font-size: 36px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   width: 20%;
   padding: 10px;
@@ -64,7 +77,11 @@ li.set-temp-box span:last-child {
 }
 
 .temperatures-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -81,6 +98,8 @@ li.set-temp-box span:last-child {
   margin: 0;
   list-style: none;
   padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 .desiredTemperature h2 {
@@ -98,8 +117,15 @@ li.outside-temp {
 
 li.arrow-container {
   width: 25%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -109,8 +135,15 @@ li.inside-temp {
   border: 2px solid;
   border-left: 0;
   padding: 20px 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -121,7 +154,12 @@ h2.section-header {
 
 li.set-temp-box {
   font-size: 24px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
 }
 
@@ -161,7 +199,11 @@ span.set-to-temp {
 }
 
 .control-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   padding: 20px;
 }
@@ -175,6 +217,8 @@ span.set-to {
   background: #fff;
   margin-top: 30px;
   height: 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 240px;
   position: relative;
@@ -196,11 +240,15 @@ span.set-to {
   width: 80px;
   z-index: 1000;
   border-radius: 25px;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
 }
 
 .thermostat-container button:hover,
 .auto-container button:hover {
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
   transition: 0.5s;
   border: 3px solid #01279b;
 }
@@ -223,6 +271,8 @@ button.last-button {
   outline: none;
   border: none;
   cursor: pointer;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
   transition: 0.25s;
   border-radius: 25px;
   border: 3px solid #fff;
@@ -233,6 +283,8 @@ i.fas.fa-fan {
   font-size: 19px;
   bottom: -30px;
   left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
 }
 
@@ -243,10 +295,14 @@ i.fas.fa-fan {
   font-size: 18px;
   color: #fff;
   left: 50%;
+  -webkit-transform: translate(-50%, 50%);
+  -ms-transform: translate(-50%, 50%);
   transform: translate(-50%, 50%);
 }
 
 .controls-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -261,10 +317,12 @@ i.fas.fa-fan {
   width: 100%;
   height: 15px;
   border-radius: 5px;
-  background: #fff
+  background: #fff;
   outline: none;
   opacity: 0.7;
   -webkit-transition: 0.2s;
+  -webkit-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
   transition: opacity 0.2s;
 }
 
@@ -300,6 +358,9 @@ i.fas.fa-fan {
 
 @media only screen and (max-width: 600px) {
   .desiredTemperature {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
   }
 
@@ -308,9 +369,18 @@ i.fas.fa-fan {
   }
 
   .controls-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
   }
 
@@ -363,9 +433,9 @@ i.fas.fa-fan {
     font-size: 24px;
   }
 
-  .slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
+  .slider::-webkit-slider-thumb,
+  .slider::-moz-range-thumb {
     width: 60px;
     height: 60px;
   }
-  
 }
